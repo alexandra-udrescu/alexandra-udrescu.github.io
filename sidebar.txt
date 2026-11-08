@@ -1,0 +1,14 @@
+# Armies shown on the site, top to bottom. One folder name from armies/ per line.
+# A line in [brackets] starts a new section in the sidebar.
+# Leave a folder out to hide it.
+
+[Warhammer 40K]
+black-templars
+grey-knights
+chaos-space-marines
+sons-of-horus
+imperial-fists
+teddy-bears
+
+[Other]
+age-of-sigmar
