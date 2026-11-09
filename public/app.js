@@ -108,6 +108,8 @@ const miniatures = (models) => models.reduce((sum, model) => sum + (model.count 
 function finished(army) { return miniatures(army.models.filter((model) => model.status === 'done')); }
 function countStatus(army, status) { return army.models.filter((model) => model.status === status).length; }
 function percent(done, total) { return total ? Math.round((done / total) * 100) : 0; }
+// "12 / 70" under a progress bar: painted miniatures out of all miniatures.
+function paintedCount(target, done, total) { target.replaceChildren(element('span', 'stat-number', String(done)), ` / ${total}`); }
 function setText(id, text) { $(id).textContent = text; }
 function safeHashSlug() { return decodeURIComponent(location.hash.slice(1).split('?')[0]); }
 // sidebar.txt groups armies into sections, e.g. Warhammer 40K and Other; consecutive armies share one.
@@ -199,6 +201,7 @@ function renderHome() {
   const progress = percent(painted, miniatures(allModels));
   setText('home-progress', String(progress));
   $('home-fill').style.width = `${progress}%`;
+  paintedCount($('home-count'), painted, miniatures(allModels));
 
   const host = $('home-armies');
   host.replaceChildren();
@@ -216,7 +219,7 @@ function renderHome() {
       const track = text.appendChild(element('span', 'hero-progress-track'));
       track.appendChild(element('span', 'progress-fill')).style.width = `${percent(done, total)}%`;
       const count = text.appendChild(element('small'));
-      if (total) count.append(element('span', 'stat-number', String(done)), ` of ${total} painted`);
+      if (total) paintedCount(count, done, total);
       else count.textContent = 'No models yet';
       tile.append(icon, text);
       grid.append(tile);
@@ -234,6 +237,7 @@ function renderArmy() {
   const progress = percent(finished(army), miniatures(army.models));
   setText('stat-progress', String(progress));
   $('progress-fill').style.width = `${progress}%`;
+  paintedCount($('stat-count'), finished(army), miniatures(army.models));
   setText('filter-all-count', String(army.models.length));
   ['done', 'ongoing', 'backlog'].forEach((status) => setText(`filter-${status}-count`, String(countStatus(army, status))));
   document.title = `${army.name} — Librarium of Miniature Armies`;

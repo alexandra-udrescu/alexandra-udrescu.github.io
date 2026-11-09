@@ -113,6 +113,7 @@ img { display: block; }
 .stat-number { color: var(--army-accent); }
 .pct { font-family: var(--text-font); font-size: var(--medium); line-height: 0; color: var(--army-accent); }
 .hero-progress-track { width: 180px; height: 6px; margin-top: 8px; border-radius: 99px; background: var(--highlight); overflow: hidden; }
+.hero-progress-count { margin-top: 6px; }
 .progress-fill { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgba(var(--army-rgb), .75), var(--army-accent)); transition: width .6s; }
 
 /* ---------- Filter bar ---------- */
