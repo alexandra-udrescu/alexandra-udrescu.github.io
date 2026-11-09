@@ -94,6 +94,18 @@ def photo_order(path: Path) -> tuple[int, str]:
     return (PHOTO_NAMES.index(stem) if stem in PHOTO_NAMES else len(PHOTO_NAMES), path.name.lower())
 
 
+def model_order(model: dict) -> tuple:
+    # Pinned first, then Completed, Ongoing, Backlog; newest finish first, undated last; then by name.
+    finished = model["finished"]
+    return (
+        not model["pinned"],
+        STATUSES.index(model["status"]),
+        not finished,
+        -int(finished.replace("-", "")) if finished else 0,
+        model["name"].casefold(),
+    )
+
+
 def media_url(parts: tuple[str, ...]) -> str:
     # Encode each path component for spaces, accents, #, %, etc.
     return "/".join(quote(part, safe="") for part in parts)
@@ -123,7 +135,7 @@ def build() -> tuple[int, int]:
             if not folder.is_dir():
                 continue
             # Folder names, not metadata, are the model names.
-            for model_dir in sorted(folder.iterdir(), key=lambda p: p.name.casefold()):
+            for model_dir in folder.iterdir():
                 if not model_dir.is_dir() or model_dir.name.startswith("."):
                     continue
 
@@ -161,9 +173,7 @@ def build() -> tuple[int, int]:
                 })
                 total += 1
 
-        # Newest finish first, undated last; then pinned first and grouped by status. Sorts are stable.
-        models.sort(key=lambda model: model["finished"], reverse=True)
-        models.sort(key=lambda model: (not model["pinned"], STATUSES.index(model["status"])))
+        models.sort(key=model_order)
         collection.append({**definition, "models": models})
 
     # Stamp asset links with the build time so browsers never run a stale app.js or styles.css.
