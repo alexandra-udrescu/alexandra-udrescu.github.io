@@ -308,9 +308,8 @@ function renderRoster() {
     const filtered = state.filter !== 'all';
     setText('empty-overline', searching || filtered ? 'No matching models' : 'Awaiting reinforcements');
     setText('empty-title', searching || filtered ? 'Nothing found in this archive.' : 'No models in this army. Yet.');
-    setText('empty-message', searching || filtered
-      ? 'Try a different search or select All Models to see the entire collection.'
-      : 'Add a folder for your first miniature, push it to GitHub, and it will appear here automatically.');
+    setText('empty-message', 'Add a folder for your first miniature, push it to GitHub, and it will appear here automatically.');
+    $('empty-message').hidden = searching || filtered;
     const path = $('empty-path');
     path.hidden = searching || filtered;
     path.textContent = `armies/${army.slug}/backlog/Your Model Name/`;
