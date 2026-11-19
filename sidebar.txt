@@ -6,9 +6,13 @@
 black-templars
 grey-knights
 chaos-space-marines
-sons-of-horus
-imperial-fists
 teddy-bears
+other-units
+
+[Horus Heresy]
+sons-of-horus
+imperial-fists-30k
+other-units-30k
 
 [Other]
 age-of-sigmar
